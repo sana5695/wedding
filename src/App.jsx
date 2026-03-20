@@ -301,7 +301,7 @@ export default function App() {
                 <div className="absolute left-[-5px] md:left-auto md:right-[-5px] top-1 w-3 h-3 bg-theme-main rounded-full"></div>
                 <Music className="hidden md:inline-block w-5 h-5 text-theme-light mr-2 mb-1" />
                 <h4 className="font-serif text-2xl mb-1">22:00 - Танцы и веселье</h4>
-                <p className="text-stone-500 font-light">Дискотека</p>
+                <p className="text-stone-500 font-light">Дискотека.</p>
               </div>
               <Music className="md:hidden absolute left-[-24px] top-0 w-5 h-5 text-theme-light bg-stone-50" />
             </div>
