@@ -1,0 +1,34 @@
+name: Build and Deploy React to Reg.ru
+
+on:
+  push:
+    branches:
+      - main  # или master, зависит от вашей основной ветки
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🛠️ Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📦 Install dependencies and build
+        run: |
+          npm install
+          npm run build
+
+      - name: 🚀 Sync files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Укажите папку сборки (build или dist)
+          local-dir: ./build/
+          # Укажите путь до папки сайта на хостинге (например, www/vash-sait.ru/)
+          server-dir: /www/anna-and-alexander-wedding.online/

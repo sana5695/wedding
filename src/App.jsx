@@ -21,8 +21,8 @@ const themeColors = {
 };
 
 // ВАЖНО: В вашем локальном проекте раскомментируйте строки ниже и удалите временные ссылки-заглушки!
- import backgroundImage from './IMG_9805.webp';
- import backgroundImageTitle from './123.webp';
+ import backgroundImage from './assets/IMG_9805.webp';
+ import backgroundImageTitle from './assets/123.webp';
 
 
 // Выносим стили в отдельный мемоизированный компонент
