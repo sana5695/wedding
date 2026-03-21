@@ -29,6 +29,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           # Укажите папку сборки (build или dist)
-          local-dir: ./build/
+          local-dir: ./dist/
           # Укажите путь до папки сайта на хостинге (например, www/vash-sait.ru/)
           server-dir: ./www/anna-and-alexander-wedding.online/
