@@ -81,7 +81,7 @@ export default function App() {
   });
 
   const calculateTimeLeft = () => {
-    const weddingDate = new Date(2026, 4, 30, 16, 0, 0); // 30 Мая 2026, 16:00
+    const weddingDate = new Date(2026, 4, 30, 16, 30, 0); // 30 Мая 2026, 16:00
     const difference = +weddingDate - +new Date();
     let timeLeft = {};
 
@@ -210,7 +210,7 @@ export default function App() {
               <Calendar className="w-10 h-10 mx-auto text-theme-main mb-6" />
               <h3 className="font-serif text-3xl mb-4">Когда</h3>
               <p className="text-xl text-stone-700 mb-2">Суббота, 30 Мая 2026</p>
-              <p className="text-stone-500">Сбор гостей в 16:00</p>
+              <p className="text-stone-500">Сбор гостей в 16:30</p>
 
               {/* Таймер */}
               <div className="mt-8 pt-8 border-t border-stone-100">
