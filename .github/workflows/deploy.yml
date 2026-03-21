@@ -31,4 +31,4 @@ jobs:
           # Укажите папку сборки (build или dist)
           local-dir: ./build/
           # Укажите путь до папки сайта на хостинге (например, www/vash-sait.ru/)
-          server-dir: /www/anna-and-alexander-wedding.online/
+          server-dir: ./www/anna-and-alexander-wedding.online/
