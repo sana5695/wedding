@@ -116,47 +116,33 @@ export default function App() {
     e.preventDefault();
     setIsLoading(true);
 
-    // 1. Формируем текст сообщения
-    const attendanceText = formData.attendance === 'yes' ? "✅ Да, с удовольствием придет!" : "❌ К сожалению, не сможет прийти";
-    let message = `🥂 Новый ответ на приглашение!\n\n`;
-    message += `👤 Имя: ${formData.name}\n`;
-    message += `❓ Присутствие: ${attendanceText}\n`;
-    if (formData.preferences) {
-      message += `🍹 Пожелания/Аллергии: ${formData.preferences}\n`;
-    }
-
-    // 2. Параметры ВКонтакте
-    const vkToken = "vk1.a.ZQRYl90bEOcdSFDylfl9K48HqcU0lxorhFyxCgGf28kh7a3V6dn1ZIUUw22j0RvfddL_5ydO7SHHxbD5gKfgnNJysqqYApuxlamoZr3-F6huO7c8VnvlUTt_9SvHNBDeHl77rS4fl3djL6tdjml8VbBPNpcw7lQJqxp_JueXJabtSLLx5uYK7VbaG2znGAyYMD868PiJPBQGgbVCEcIC0w";
-    const userId = "195078279";
-    const randomId = Math.floor(Math.random() * 900000) + 100000;
-
-    // 3. Собираем параметры в строку запроса (Строго на api.vk.com)
-    const vkApiUrl = `https://vk.com${userId}&random_id=${randomId}&message=${encodeURIComponent(message)}&access_token=${vkToken}&v=5.131`;
+    const dataToSend = {
+      name: formData.name,
+      attendance: formData.attendance,
+      preferences: formData.preferences || ''
+    };
 
     try {
-      // 4. Отправка прямого POST-запроса через fetch
-      const response = await fetch(vkApiUrl, {
+      // Шлем запрос строго на ваш файл на сервере
+      const response = await fetch('/send_vk.php', {
         method: 'POST',
-        mode: 'cors', // Заставляем браузер показать реальный ответ от ВК
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
       });
 
       const result = await response.json();
 
-      // 5. Разбираем ответ от ВКонтакте
-      if (result.response) {
-        setIsSubmitted(true); // Всё супер, переключаем экран
-      } else if (result.error) {
-        // Если ВК вернул понятную ошибку (например, не дали разрешение группе)
-        alert(`Ошибка ВК (Код ${result.error.error_code}): ${result.error.error_msg}`);
-        if (result.error.error_code === 901) {
-          alert("🚨 Важно: Зайдите в сообщения вашей группы ВК и напишите ей любое слово (например, 'Привет'), чтобы бот получил право слать вам уведомления!");
-        }
+      if (response.ok && result.status === 'success') {
+        setIsSubmitted(true); // Переключаем интерфейс на "Спасибо!"
+      } else {
+        // Показываем точную причину ошибки из PHP
+        alert(`Ошибка: ${result.message || 'Не удалось сохранить ответ'}`);
       }
     } catch (error) {
-      // Если запрос заблокирован политикой CORS на localhost, мы всё равно считаем,
-      // что он улетел (ВК его примет), и переключаем интерфейс для гостя
-      console.warn("CORS ограничение локального сервера, но запрос отправлен в сеть.");
-      setIsSubmitted(true);
+      console.error('Ошибка отправки:', error);
+      alert('Не удалось отправить форму. Проверьте интернет-соединение.');
     } finally {
       setIsLoading(false);
     }
