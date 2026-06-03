@@ -77,9 +77,9 @@ export default function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: nameInput,          // Проверьте, что переменная не пустая!
-    attendance: attendance,   // 'yes' или 'no'
-    preferences: preferences
+    name: '',
+    attendance: 'yes',
+    preferences: ''
   });
 
   const calculateTimeLeft = () => {
@@ -116,6 +116,12 @@ export default function App() {
     e.preventDefault();
     setIsLoading(true);
 
+    const dataToSend = {
+      name: formData.name,
+      attendance: formData.attendance,
+      preferences: formData.preferences || ''
+    };
+
     try {
       // Если фронтенд и PHP-скрипт лежат на одном хостинге, путь будет '/send_vk.php'
       // Если на разных, укажите полный путь: 'https://xn----7sbbf2b7bj7b.ru'
@@ -124,7 +130,7 @@ export default function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSend),
       });
 
       const result = await response.json();
