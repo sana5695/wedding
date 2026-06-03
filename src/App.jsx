@@ -1,17 +1,18 @@
 import React, { useState, useEffect, memo } from 'react';
-import { Heart, Calendar, MapPin, Clock, Utensils, GlassWater, Music, Camera, Check } from 'lucide-react';
+import {
+  Heart,
+  Calendar,
+  MapPin,
+  Clock,
+  Utensils,
+  GlassWater,
+  Music,
+  Camera,
+  Check,
+  Wine,
+   Flower, Rose
+} from 'lucide-react';
 
-// =====================================================================
-// 🎨 ПАЛИТРА САЙТА (НАСТРОЙКА ЦВЕТА)
-// =====================================================================
-// Замените HEX-коды ниже, чтобы поменять основной цвет всего сайта.
-// Сейчас установлен Пыльно-розовый (Rose).
-//
-// Готовые примеры (просто скопируйте значения внутрь themeColors):
-// 🌿 Изумрудный (Emerald): lightest: '#a7f3d0', light: '#6ee7b7', main: '#34d399', dark: '#10b981', darkest: '#059669'
-// ☁️ Небесно-голубой (Sky): lightest: '#bae6fd', light: '#7dd3fc', main: '#38bdf8', dark: '#0ea5e9', darkest: '#0284c7'
-// 💜 Лавандовый (Violet): lightest: '#ddd6fe', light: '#c4b5fd', main: '#a78bfa', dark: '#8b5cf6', darkest: '#7c3aed'
-// =====================================================================
 const themeColors = {
   lightest: '#34d399',
   light: '#10b981',
@@ -21,8 +22,9 @@ const themeColors = {
 };
 
 // ВАЖНО: В вашем локальном проекте раскомментируйте строки ниже и удалите временные ссылки-заглушки!
- import backgroundImage from './assets/IMG_9805.webp';
- import backgroundImageTitle from './assets/123.webp';
+ import backgroundImage from './assets/1.png';
+ import backgroundImageTitle from './assets/2.jpg';
+
 
 
 // Выносим стили в отдельный мемоизированный компонент
@@ -47,7 +49,7 @@ const GlobalStyles = memo(() => (
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(20px);}
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -81,7 +83,7 @@ export default function App() {
   });
 
   const calculateTimeLeft = () => {
-    const weddingDate = new Date(2026, 4, 30, 16, 30, 0); // 30 Мая 2026, 16:00
+    const weddingDate = new Date(2026, 6, 17, 15, 0, 0); // 30 Мая 2026, 16:00
     const difference = +weddingDate - +new Date();
     let timeLeft = {};
 
@@ -115,27 +117,26 @@ export default function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://formspree.io/f/xjgazpdn', {
+      // Если фронтенд и PHP-скрипт лежат на одном хостинге, путь будет '/send_vk.php'
+      // Если на разных, укажите полный путь: 'https://xn----7sbbf2b7bj7b.ru'
+      const response = await fetch('/send_vk.php', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          'Имя гостя': formData.name,
-          'Присутствие': formData.attendance === 'yes' ? 'Да, буду' : 'Нет, не смогу',
-          'Пожелания/Аллергии': formData.preferences || 'Нет пожеланий'
-        })
+        body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        throw new Error('Ошибка сети');
-      }
+      const result = await response.json();
 
-      console.log('Отправленные данные:', formData);
-      setIsSubmitted(true);
+      if (response.ok && result.status === 'success') {
+        setIsSubmitted(true);
+      } else {
+        alert(`Ошибка при отправке: ${result.message || 'Попробуйте позже'}`);
+      }
     } catch (error) {
-      console.error('Ошибка отправки:', error);
-      alert('Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз или сообщите нам лично.');
+      console.error('Ошибка сети:', error);
+      alert('Не удалось отправить ответ. Проверьте интернет-соединение.');
     } finally {
       setIsLoading(false);
     }
@@ -159,12 +160,12 @@ export default function App() {
           <div className="relative z-10 text-center text-white px-4 fade-in">
             <p className="tracking-[0.2em] uppercase text-sm md:text-base mb-6 text-stone-200">Мы женимся</p>
             <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl mb-4 font-light">
-              Александр
+              Алексей
               <span className="block text-4xl md:text-6xl italic my-2 text-theme-lightest">&</span>
-              Анна
+              Екатерина
             </h1>
             <p className="text-xl md:text-2xl mt-8 tracking-widest font-light">
-              30 . 05 . 2026
+              17 . 07 . 2026
             </p>
             <div className="mt-12">
               <a href="#rsvp" className="inline-block border border-white/50 px-8 py-3 rounded-full hover:bg-white hover:text-stone-900 transition-colors duration-300 backdrop-blur-sm">
@@ -177,11 +178,10 @@ export default function App() {
         {/* Invitation Text Section */}
         <section className="py-24 px-4 text-center max-w-3xl mx-auto">
           <Heart className="mx-auto w-8 h-8 text-theme-light mb-8 opacity-50" />
-          <h2 className="font-serif text-4xl md:text-5xl mb-8 text-stone-800">Дорогие родные и друзья!</h2>
+          <h2 className="font-serif text-4xl md:text-5xl mb-8 text-stone-800">Дорогие и любимые наши гости!</h2>
           <p className="text-lg md:text-xl leading-relaxed text-stone-600 font-light">
-            Мы приглашаем вас разделить с нами один из самых важных и счастливых дней в нашей жизни.
-            Ваше присутствие сделает наш праздник по-настоящему особенным и незабываемым.
-            Будем рады видеть вас на нашей свадьбе!
+            Мы мечтаем, чтобы этот день вы провели в радости и уюте, были с нами открыты и искренни.
+            Мы ждём вас с огромным нетерпением и самой тёплой улыбкой, ведь ваше присутствие — главный подарок для нас.
           </p>
         </section>
 
@@ -202,50 +202,52 @@ export default function App() {
           </div>
         </section>
 
-        {/* Details (When & Where) */}
-        <section className="bg-stone-100 py-20 px-4">
-          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
-            {/* Когда */}
-            <div className="bg-white p-10 md:p-14 text-center rounded-2xl shadow-sm border border-stone-100">
-              <Calendar className="w-10 h-10 mx-auto text-theme-main mb-6" />
-              <h3 className="font-serif text-3xl mb-4">Когда</h3>
-              <p className="text-xl text-stone-700 mb-2">Суббота, 30 Мая 2026</p>
-              <p className="text-stone-500">Сбор гостей в 16:30</p>
 
-              {/* Таймер */}
-              <div className="mt-8 pt-8 border-t border-stone-100">
-                <p className="text-sm uppercase tracking-wider text-stone-400 mb-4">До свадьбы осталось:</p>
-                <div className="flex justify-center space-x-4 md:space-x-6">
-                  {Object.keys(timeLeft).length ? Object.keys(timeLeft).map((interval, index) => (
-                      <div key={index} className="flex flex-col items-center">
-                        <span className="font-serif text-3xl md:text-4xl text-stone-800">{timeLeft[interval]}</span>
-                        <span className="text-xs text-stone-500 uppercase tracking-wider">{interval}</span>
-                      </div>
-                  )) : (
-                      <span className="font-serif text-2xl text-theme-main italic">Свершилось!</span>
-                  )}
-                </div>
+
+
+        {/* Details (When & Where) */}
+        <section className="bg-stone-100 px-4">
+          <div className="max-w-5xl mx-auto grid md:grid-cols-1 gap-12">
+          <div className=" p-10 md:p-14 text-center rounded-2xl ">
+            {/* Таймер */}
+            <div className=" border-t border-stone-100">
+              <p className="text-sm uppercase tracking-wider text-stone-400 mb-4">До свадьбы осталось:</p>
+              <div className="flex justify-center space-x-4 md:space-x-6">
+                {Object.keys(timeLeft).length ? Object.keys(timeLeft).map((interval, index) => (
+                    <div key={index} className="flex flex-col items-center">
+                      <span className="font-serif text-3xl md:text-4xl text-stone-800">{timeLeft[interval]}</span>
+                      <span className="text-xs text-stone-500 uppercase tracking-wider">{interval}</span>
+                    </div>
+                )) : (
+                    <span className="font-serif text-2xl text-theme-main italic">Свершилось!</span>
+                )}
               </div>
+            </div>
+          </div>
+
+
+          </div>
+
+
+
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
+
+
+            {/* Регистрация */}
+            <div className="bg-white p-10 md:p-14 text-center rounded-2xl shadow-sm border border-stone-100">
+              <Flower className="w-10 h-10 mx-auto text-theme-main mb-6" />
+              <h3 className="font-serif text-3xl mb-4">Регистрация брака</h3>
+              <p className="text-xl text-stone-700 mb-2">Начало регистрации в 15:00</p>
+              <p className="text-stone-500">ЗАГС, Площадь Победы, д. 1</p>
+
             </div>
 
             {/* Где */}
             <div className="bg-white p-10 md:p-14 text-center rounded-2xl shadow-sm border border-stone-100">
-              <MapPin className="w-10 h-10 mx-auto text-theme-main mb-6" />
-              <h3 className="font-serif text-3xl mb-4">Где</h3>
-              <p className="text-xl text-stone-700 mb-2">Фудстори</p>
-              <p className="text-stone-500 mb-6">Сибирский тракт, 12, стр. 2</p>
-              <p className="text-sm text-stone-400 leading-relaxed mb-8">
-                Церемония пройдет на свежем воздухе, а банкет в зале.
-              </p>
-              <a
-                  href="https://yandex.ru/maps/?text=Фудстори,+Сибирский+тракт,+12,+стр.+2"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-2 text-theme-dark hover-text-theme-darkest font-medium transition-colors"
-              >
-                <MapPin className="w-4 h-4" />
-                <span>Открыть на карте</span>
-              </a>
+              <Wine className="w-10 h-10 mx-auto text-theme-main mb-6" />
+              <h3 className="font-serif text-3xl mb-4">Банкет</h3>
+              <p className="text-xl text-stone-700 mb-2">Сбор гостей в 17:30</p>
+              <p className="text-stone-500 mb-6">Кафе «Весна», ул. Устинова, 96</p>
             </div>
           </div>
         </section>
@@ -259,19 +261,19 @@ export default function App() {
             <div className="relative pl-8 md:pl-0">
               <div className="md:w-1/2 md:pr-12 md:text-right">
                 <div className="absolute left-[-5px] md:left-auto md:right-[-5px] top-1 w-3 h-3 bg-theme-main rounded-full"></div>
-                <Clock className="hidden md:inline-block w-5 h-5 text-theme-light mr-2 mb-1" />
-                <h4 className="font-serif text-2xl mb-1">16:30 - Сбор гостей</h4>
-                <p className="text-stone-500 font-light">Приветственный фуршет, шампанское и легкая музыка.</p>
+                <Rose className="hidden md:inline-block w-5 h-5 text-theme-light mr-2 mb-1" />
+                <h4 className="font-serif text-2xl mb-1">15:00 - Регистрация брака</h4>
+                <p className="text-stone-500 font-light">Обмен клятвами и кольцами</p>
               </div>
-              <Clock className="md:hidden absolute left-[-24px] top-0 w-5 h-5 text-theme-light bg-stone-50" />
+              <Rose className="md:hidden absolute left-[-24px] top-0 w-5 h-5 text-theme-light bg-stone-50" />
             </div>
 
             <div className="relative pl-8 md:pl-0">
               <div className="md:w-1/2 md:ml-auto md:pl-12 text-left">
                 <div className="absolute left-[-5px] top-1 w-3 h-3 bg-theme-main rounded-full"></div>
                 <Heart className="hidden md:inline-block w-5 h-5 text-theme-light mr-2 mb-1" />
-                <h4 className="font-serif text-2xl mb-1">17:00 - Церемония</h4>
-                <p className="text-stone-500 font-light">Обмен клятвами и кольцами у цветочной арки.</p>
+                <h4 className="font-serif text-2xl mb-1">17:30 - Сбор гостей</h4>
+                <p className="text-stone-500 font-light">Кафе «Весна», ул. Устинова, 96</p>
               </div>
               <Heart className="md:hidden absolute left-[-24px] top-0 w-5 h-5 text-theme-light bg-stone-50" />
             </div>
@@ -279,26 +281,16 @@ export default function App() {
             <div className="relative pl-8 md:pl-0">
               <div className="md:w-1/2 md:pr-12 md:text-right">
                 <div className="absolute left-[-5px] md:left-auto md:right-[-5px] top-1 w-3 h-3 bg-theme-main rounded-full"></div>
-                <Camera className="hidden md:inline-block w-5 h-5 text-theme-light mr-2 mb-1" />
-                <h4 className="font-serif text-2xl mb-1">17:45 - Фотосессия</h4>
-                <p className="text-stone-500 font-light">Общие фотографии на память с молодоженами.</p>
-              </div>
-              <Camera className="md:hidden absolute left-[-24px] top-0 w-5 h-5 text-theme-light bg-stone-50" />
-            </div>
-
-            <div className="relative pl-8 md:pl-0">
-              <div className="md:w-1/2 md:ml-auto md:pl-12 text-left">
-                <div className="absolute left-[-5px] top-1 w-3 h-3 bg-theme-main rounded-full"></div>
                 <Utensils className="hidden md:inline-block w-5 h-5 text-theme-light mr-2 mb-1" />
-                <h4 className="font-serif text-2xl mb-1">18:30 - Праздничный ужин</h4>
+                <h4 className="font-serif text-2xl mb-1">18:00 - Праздничный ужин</h4>
                 <p className="text-stone-500 font-light">Банкет, тосты, вкусная еда и развлекательная программа.</p>
               </div>
               <Utensils className="md:hidden absolute left-[-24px] top-0 w-5 h-5 text-theme-light bg-stone-50" />
             </div>
 
             <div className="relative pl-8 md:pl-0">
-              <div className="md:w-1/2 md:pr-12 md:text-right">
-                <div className="absolute left-[-5px] md:left-auto md:right-[-5px] top-1 w-3 h-3 bg-theme-main rounded-full"></div>
+              <div className="md:w-1/2 md:ml-auto md:pl-12 text-left">
+                <div className="absolute left-[-5px] top-1 w-3 h-3 bg-theme-main rounded-full"></div>
                 <Music className="hidden md:inline-block w-5 h-5 text-theme-light mr-2 mb-1" />
                 <h4 className="font-serif text-2xl mb-1">22:00 - Танцы и веселье</h4>
                 <p className="text-stone-500 font-light">Дискотека.</p>
@@ -315,16 +307,15 @@ export default function App() {
             <h2 className="font-serif text-4xl md:text-5xl mb-8">Дресс-код</h2>
             <p className="text-lg text-stone-600 font-light mb-10 leading-relaxed">
               Мы будем очень признательны, если при выборе наряда вы поддержите цветовую гамму нашего праздника.
-              Предпочтительны легкие ткани, пастельные и приглушенные природные оттенки.
+              Предпочтительны легкие ткани, пастельные и приглушенные оттенки.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 md:gap-8">
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#D7C0A9] shadow-inner border border-stone-200" title="Пудровый"></div>
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#E3BEB4] shadow-inner border border-stone-200" title="Фисташковый"></div>
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#9F8D80] shadow-inner border border-stone-200" title="Пыльно-серый"></div>
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#96A47F] shadow-inner border border-stone-200" title="Бежевый"></div>
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#7A5A46] shadow-inner border border-stone-200" title="Шалфей"></div>
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#656540] shadow-inner border border-stone-200" title="Оливковый"></div>
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#F7E0C9] shadow-inner border border-stone-200" title="Пудровый"></div>
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#FFE0E0] shadow-inner border border-stone-200" title="Фисташковый"></div>
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#DFDFDF] shadow-inner border border-stone-200" title="Пыльно-серый"></div>
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#B6C49F] shadow-inner border border-stone-200" title="Бежевый"></div>
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#AA9A86] shadow-inner border border-stone-200" title="Шалфей"></div>
             </div>
             <p className="text-sm text-stone-400 mt-8">
               *Пожалуйста, избегайте чисто белого цвета (он для невесты), а также слишком ярких, неоновых оттенков, чтобы палитра праздника оставалась гармоничной.
@@ -438,16 +429,15 @@ export default function App() {
 
         {/* Footer */}
         <footer className="bg-stone-900 text-stone-400 py-12 text-center">
-          <h2 className="font-serif text-3xl text-white mb-4 italic">А & А</h2>
-          <p className="mb-6">30 мая 2026 г.</p>
+          <h2 className="font-serif text-3xl text-white mb-4 italic">А & Е</h2>
+          <p className="mb-6">17 июля 2026 г.</p>
           <div className="flex justify-center space-x-4 mb-8">
             <Heart className="w-4 h-4 text-theme-main opacity-50" />
             <Heart className="w-4 h-4 text-theme-main opacity-50" />
             <Heart className="w-4 h-4 text-theme-main opacity-50" />
           </div>
           <p className="text-sm text-stone-600">
-            С нетерпением ждем встречи с вами! <br/> По всем вопросам: +7 (912) 645-38-66 (Александр) <br/> +7 (912) 294-01-05 (Анна)
-          </p>
+            С нетерпением ждём встречи, чтобы разделить с вами этот счастливый день! </p>
         </footer>
       </div>
   );
