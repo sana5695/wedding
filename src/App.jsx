@@ -77,9 +77,9 @@ export default function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    attendance: 'yes',
-    preferences: ''
+    name: nameInput,          // Проверьте, что переменная не пустая!
+    attendance: attendance,   // 'yes' или 'no'
+    preferences: preferences
   });
 
   const calculateTimeLeft = () => {
